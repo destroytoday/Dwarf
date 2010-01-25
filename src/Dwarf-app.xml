@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<application xmlns="http://ns.adobe.com/air/application/1.5.3">
+	<id>com.destroytoday.dwarf.Dwarf</id>
+	<filename>Dwarf</filename>
+	<name>Dwarf</name>
+	<version>1.0.0 Build 20100125</version>
+	<!-- <description></description> -->
+	<!-- <copyright></copyright> -->
+	<initialWindow>
+		<content>[This value will be overwritten by Flash Builder in the output app.xml]</content>
+	</initialWindow>
+	<!-- <icon>
+		<image16x16></image16x16>
+		<image32x32></image32x32>
+		<image48x48></image48x48>
+		<image128x128></image128x128>
+	</icon> -->
+</application>

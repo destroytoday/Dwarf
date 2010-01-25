@@ -1,4 +1,7 @@
 package com.destroytoday.dwarf.contexts {
+	import com.destroytoday.dwarf.desktop.Toolbar;
+	import com.destroytoday.util.ApplicationUtil;
+	
 	import flash.display.DisplayObjectContainer;
 	
 	import org.robotlegs.mvcs.Context;
@@ -21,7 +24,9 @@ package com.destroytoday.dwarf.contexts {
 		 * @inheritDoc
 		 */		
 		override public function startup():void {
+			injector.mapSingleton(Toolbar);
 			
+			if (ApplicationUtil.mac) new Toolbar().setup();
 		}
 	}
 }

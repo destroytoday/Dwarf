@@ -1,8 +1,14 @@
 package com.destroytoday.dwarf.desktop {
 	import com.destroytoday.desktop.NativeMenuPlus;
+	import com.destroytoday.dwarf.controllers.ToolController;
+	import com.destroytoday.util.ApplicationUtil;
+	import com.destroytoday.util.WindowUtil;
 	
 	import flash.desktop.NativeApplication;
 	import flash.display.NativeMenuItem;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
+	import flash.ui.Keyboard;
 	
 	import org.robotlegs.mvcs.Actor;
 
@@ -11,6 +17,9 @@ package com.destroytoday.dwarf.desktop {
 	 * @author Jonnie Hallman
 	 */	
 	public class Toolbar extends Actor {
+		[Inject]
+		public var toolController:ToolController;
+		
 		/**
 		 * The Application menu item. 
 		 */		
@@ -32,6 +41,16 @@ package com.destroytoday.dwarf.desktop {
 		public var fileMenu:NativeMenuPlus;
 		
 		/**
+		 * The Window menu item. 
+		 */		
+		public var windowItem:NativeMenuItem;
+		
+		/**
+		 * The Window menu. 
+		 */		
+		public var windowMenu:NativeMenuPlus;
+		
+		/**
 		 * Constructs the Toolbar instance.
 		 */		
 		public function Toolbar() {
@@ -51,8 +70,8 @@ package com.destroytoday.dwarf.desktop {
 				<menu>
 					<item name="aboutDwarf" label="About Dwarf" />
 					<separator />
-					<item name="preferences" keyEquivalentModifiers="command" keyEquivalent="," label="Preferences..." />
-					<separator />
+					<!--<item name="preferences" keyEquivalentModifiers="command" keyEquivalent="," label="Preferences..." />
+					<separator />-->
 					<item name="quit" keyEquivalentModifiers="command" keyEquivalent="q" label="Quit" />
 				</menu>;
 			
@@ -73,9 +92,24 @@ package com.destroytoday.dwarf.desktop {
 			
 			fileItem.submenu = fileMenu;
 			
+			//
+			// Window Item / Menu
+			//
+			windowItem = NativeApplication.nativeApplication.menu.getItemAt(3);
+			windowMenu = new NativeMenuPlus();
+			
+			windowMenu.data = 
+				<menu>
+					<item name="maximizeWindow" keyEquivalentModifiers="command" keyEquivalent="M" label="Maximize" />
+					<item name="minimizeWindow" keyEquivalentModifiers="command" keyEquivalent="m" label="Minimize" />				
+				</menu>;
+			
+			windowItem.submenu = windowMenu;
+			
 			//add listeners
 			applicationMenu.itemSelectSignal.add(applicationMenuItemSelectHandler);
 			fileMenu.itemSelectSignal.add(fileMenuItemSelectHandler);
+			windowMenu.itemSelectSignal.add(windowMenuItemSelectHandler);
 		}
 		
 		/**
@@ -86,11 +120,12 @@ package com.destroytoday.dwarf.desktop {
 		protected function applicationMenuItemSelectHandler(menu:NativeMenuPlus, item:NativeMenuItem):void {
 			switch (item.name) {
 				case "aboutDwarf":
+					navigateToURL(new URLRequest("http://github.com/destroytoday/Dwarf"));
 					break;
 				case "preferences":
 					break;
 				case "quit":
-					NativeApplication.nativeApplication.exit();
+					WindowUtil.closeAll(true);
 					break;
 			}
 		}
@@ -103,9 +138,28 @@ package com.destroytoday.dwarf.desktop {
 		protected function fileMenuItemSelectHandler(menu:NativeMenuPlus, item:NativeMenuItem):void {
 			switch (item.name) {
 				case "newRuler":
+					toolController.addRuler();
 					break;
 				case "closeTool":
-					NativeApplication.nativeApplication.activeWindow.close();
+					toolController.removeCurrentTool();
+					break;
+			}
+		}
+		
+		/**
+		 * @private
+		 * @param menu
+		 * @param item
+		 */		
+		protected function windowMenuItemSelectHandler(menu:NativeMenuPlus, item:NativeMenuItem):void {
+			if (!NativeApplication.nativeApplication.activeWindow) return;
+			
+			switch (item.name) {
+				case "maximizeWindow":
+					NativeApplication.nativeApplication.activeWindow.maximize();
+					break;
+				case "minimizeWindow":
+					NativeApplication.nativeApplication.activeWindow.minimize();
 					break;
 			}
 		}

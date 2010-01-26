@@ -1,6 +1,6 @@
 package {
 	import com.destroytoday.dwarf.contexts.ApplicationContext;
-	import com.destroytoday.dwarf.views.ruler.RulerWindow;
+	import com.destroytoday.dwarf.views.ruler.RulerView;
 	
 	import flash.display.Sprite;
 	import flash.ui.Multitouch;
@@ -23,8 +23,6 @@ package {
 			context = new ApplicationContext(this);
 			
 			stage.frameRate = 50.0; //TODO - integrate framerate throttler
-			
-			new RulerWindow(); //TODO - create tool model
 		}
 	}
 }

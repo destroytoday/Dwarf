@@ -19,8 +19,11 @@ package com.destroytoday.dwarf.assets {
 		 */		
 		public static const INTERSTATE_REGULAR_FONT:String = "Interstate-Regular";
 		
-		[Embed(source="icons/16.png", mimeType="image/png")]
-		public static const ICON_16X16:Class;
+		/**
+		 * The System Tray icon (PC only) 
+		 */		
+		[Embed(source="icons/32.png", mimeType="image/png")]
+		public static const ICON_32X32:Class;
 		
 		/**
 		 * @private

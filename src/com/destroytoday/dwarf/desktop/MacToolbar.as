@@ -17,7 +17,7 @@ package com.destroytoday.dwarf.desktop {
 	 * The Toolbar class represents the desktop toolbar on Mac.
 	 * @author Jonnie Hallman
 	 */	
-	public class Toolbar extends Actor {
+	public class MacToolbar {
 		[Inject]
 		public var toolController:ToolController;
 		
@@ -57,7 +57,7 @@ package com.destroytoday.dwarf.desktop {
 		/**
 		 * Constructs the Toolbar instance.
 		 */		
-		public function Toolbar() {
+		public function MacToolbar() {
 		}
 		
 		/**

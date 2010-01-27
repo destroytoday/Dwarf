@@ -134,6 +134,14 @@ package com.destroytoday.dwarf.views.ruler {
 		}
 		
 		/**
+		 * Returns the Ruler's native window.
+		 * @return 
+		 */		
+		public function get window():NativeWindow {
+			return stage.nativeWindow;
+		}
+		
+		/**
 		 * The color of the Ruler's platform.
 		 * @return 
 		 */		

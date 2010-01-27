@@ -1,5 +1,14 @@
 package com.destroytoday.dwarf.assets {
 	public class Color {
+		// interface colors
+		public static const GREY_2:uint = 0x222222;
+		public static const GREY_2B:uint = 0x2B2B2B;
+		public static const GREY_3:uint = 0x333333;
+		public static const GREY_42:uint = 0x424242;
+		public static const GREY_A:uint = 0xAAAAAA;
+		public static const GREY_C3C6C8:uint = 0xC3C6C8;
+		
+		// tool colors
 		public static const WHITE:uint = 0xFFFFFF;
 		public static const BLACK:uint = 0x000000;
 		public static const RED:uint = 0xCA3430;

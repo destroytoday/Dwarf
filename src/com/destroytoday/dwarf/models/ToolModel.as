@@ -1,5 +1,6 @@
 package com.destroytoday.dwarf.models {
 	import com.destroytoday.dwarf.core.ITool;
+	import com.destroytoday.filesystem.CacheObject;
 	
 	import flash.display.NativeWindow;
 	
@@ -14,6 +15,11 @@ package com.destroytoday.dwarf.models {
 		 * @private 
 		 */		
 		protected var _tools:Vector.<ITool> = new Vector.<ITool>();
+		
+		/**
+		 * @private 
+		 */		
+		protected var cache:CacheObject = new CacheObject("tools");
 		
 		/**
 		 * @private 
@@ -51,6 +57,38 @@ package com.destroytoday.dwarf.models {
 		}
 		
 		/**
+		 * The last used tool color.
+		 * @return 
+		 */		
+		public function get toolColor():uint {
+			return uint(cache.getProperty("toolColor"));
+		}
+		
+		/**
+		 * @private 
+		 * @param value
+		 */		
+		public function set toolColor(value:uint):void {
+			cache.setProperty("toolColor", value);
+		}
+		
+		/**
+		 * The last used tool alpha.
+		 * @return 
+		 */		
+		public function get toolAlpha():Number {
+			return Number(cache.getProperty("toolAlpha"));
+		}
+		
+		/**
+		 * @private 
+		 * @param value
+		 */		
+		public function set toolAlpha(value:Number):void {
+			cache.setProperty("toolAlpha", value);
+		}
+		
+		/**
 		 * Adds the provided tool.
 		 * @param tool the tool to add
 		 */		
@@ -58,6 +96,9 @@ package com.destroytoday.dwarf.models {
 			if (_tools.indexOf(tool) > -1) return null;
 			
 			_tools[_tools.length] = tool;
+			
+			tool.color = toolColor;
+			tool.alpha = toolAlpha;
 			
 			return tool;
 		}

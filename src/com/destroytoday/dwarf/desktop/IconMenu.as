@@ -1,5 +1,6 @@
 package com.destroytoday.dwarf.desktop {
 	import com.destroytoday.desktop.NativeMenuPlus;
+	import com.destroytoday.dwarf.assets.Assets;
 	import com.destroytoday.dwarf.controllers.ToolController;
 	import com.destroytoday.util.ApplicationUtil;
 	
@@ -32,7 +33,10 @@ package com.destroytoday.dwarf.desktop {
 						<item name="closeTool" label="Close Tool" />
 					</menu>;
 			} else {
-				(NativeApplication.nativeApplication.icon as SystemTrayIcon).menu = this;
+				var icon:SystemTrayIcon = NativeApplication.nativeApplication.icon as SystemTrayIcon;
+				
+				icon.bitmaps = [new Assets.ICON_16X16()];
+				icon.menu = this;
 				
 				data = 
 					<menu>

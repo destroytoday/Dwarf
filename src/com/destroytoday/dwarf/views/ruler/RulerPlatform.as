@@ -1,5 +1,6 @@
 package com.destroytoday.dwarf.views.ruler {
 	import com.destroytoday.display.Group;
+	import com.destroytoday.dwarf.assets.Color;
 	
 	import flash.display.Bitmap;
 	import flash.display.BitmapData;
@@ -24,7 +25,12 @@ package com.destroytoday.dwarf.views.ruler {
 		/**
 		 * @private 
 		 */		
-		protected var fillColor:uint = 0x007998;
+		protected var _alpha:Number = 0.8;
+		
+		/**
+		 * @private 
+		 */		
+		protected var _fillColor:uint = Color.BLACK;
 		
 		/**
 		 * Constructs the RulerPlatform instance.
@@ -38,6 +44,44 @@ package com.destroytoday.dwarf.views.ruler {
 			bottom = 0.0;
 			
 			drawGridBitmapData();
+		}
+		
+		/**
+		 * The transparency of the Ruler.
+		 * @return 
+		 */		
+		override public function get alpha():Number {
+			return _alpha;
+		}
+		
+		/**
+		 * @private
+		 * @param value
+		 */		
+		override public function set alpha(value:Number):void {
+			if (value < 0.2 || value > 1.0) return;
+			
+			_alpha = value;
+			
+			draw();
+		}
+		
+		/**
+		 * The color of the Ruler's platform.
+		 * @return 
+		 */		
+		public function get fillColor():uint {
+			return _fillColor;
+		}
+		
+		/**
+		 * @private
+		 * @param value
+		 */		
+		public function set fillColor(value:uint):void {
+			_fillColor = value;
+			
+			draw();
 		}
 		
 		/**
@@ -68,7 +112,7 @@ package com.destroytoday.dwarf.views.ruler {
 			graphics.clear();
 			
 			// draw the edge fill
-			graphics.beginFill(fillColor, 0.8);
+			graphics.beginFill(fillColor, _alpha);
 			graphics.moveTo(0.0, 0.0);
 			graphics.lineTo(width, 0.0);
 			graphics.lineTo(width, 20.0);
@@ -78,7 +122,7 @@ package com.destroytoday.dwarf.views.ruler {
 			graphics.endFill();
 			
 			// draw the body fill
-			graphics.beginFill(fillColor, 0.5);
+			graphics.beginFill(fillColor, _alpha * 0.625);
 			graphics.drawRect(20.0, 20.0, width, height);
 			graphics.endFill();
 			

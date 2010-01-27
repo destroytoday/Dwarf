@@ -1,4 +1,6 @@
 package com.destroytoday.dwarf.assets {
+	import flash.display.Bitmap;
+
 	/**
 	 * The Assets class handles all embedded assets.
 	 * @author Jonnie Hallman
@@ -16,6 +18,9 @@ package com.destroytoday.dwarf.assets {
 		 * Interstate Regular
 		 */		
 		public static const INTERSTATE_REGULAR_FONT:String = "Interstate-Regular";
+		
+		[Embed(source="icons/16.png", mimeType="image/png")]
+		public static const ICON_16X16:Class;
 		
 		/**
 		 * @private

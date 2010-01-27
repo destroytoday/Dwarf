@@ -2,6 +2,7 @@ package com.destroytoday.dwarf.contexts {
 	import com.destroytoday.dwarf.controllers.AddRulerCommand;
 	import com.destroytoday.dwarf.controllers.ToolController;
 	import com.destroytoday.dwarf.desktop.IconMenu;
+	import com.destroytoday.dwarf.desktop.RulerMenu;
 	import com.destroytoday.dwarf.desktop.Toolbar;
 	import com.destroytoday.dwarf.mediators.RulerMediator;
 	import com.destroytoday.dwarf.models.ToolModel;
@@ -36,6 +37,7 @@ package com.destroytoday.dwarf.contexts {
 			injector.mapSingleton(ToolModel);
 			injector.mapSingleton(Toolbar);
 			injector.mapSingleton(IconMenu);
+			injector.mapSingleton(RulerMenu);
 			
 			injector.mapValue(AddRulerSignal, signalCommandMap.mapSignalClass(AddRulerSignal, AddRulerCommand));
 			
@@ -48,9 +50,7 @@ package com.destroytoday.dwarf.contexts {
 			}
 			
 			var iconMenu:IconMenu = new IconMenu();
-			
 			injector.injectInto(iconMenu);
-			
 			iconMenu.setup();
 			
 			mediatorMap.mapView(RulerView, RulerMediator);

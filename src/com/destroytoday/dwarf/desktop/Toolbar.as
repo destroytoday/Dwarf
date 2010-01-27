@@ -1,6 +1,7 @@
 package com.destroytoday.dwarf.desktop {
 	import com.destroytoday.desktop.NativeMenuPlus;
 	import com.destroytoday.dwarf.controllers.ToolController;
+	import com.destroytoday.dwarf.models.ToolModel;
 	import com.destroytoday.util.ApplicationUtil;
 	import com.destroytoday.util.WindowUtil;
 	
@@ -19,6 +20,9 @@ package com.destroytoday.dwarf.desktop {
 	public class Toolbar extends Actor {
 		[Inject]
 		public var toolController:ToolController;
+		
+		[Inject]
+		public var toolModel:ToolModel;
 		
 		/**
 		 * The Application menu item. 
@@ -152,14 +156,14 @@ package com.destroytoday.dwarf.desktop {
 		 * @param item
 		 */		
 		protected function windowMenuItemSelectHandler(menu:NativeMenuPlus, item:NativeMenuItem):void {
-			if (!NativeApplication.nativeApplication.activeWindow) return;
+			if (!toolModel.currentTool) return;
 			
 			switch (item.name) {
 				case "maximizeWindow":
-					NativeApplication.nativeApplication.activeWindow.maximize();
+					toolModel.currentTool.maximize();
 					break;
 				case "minimizeWindow":
-					NativeApplication.nativeApplication.activeWindow.minimize();
+					toolModel.currentTool.minimize();
 					break;
 			}
 		}

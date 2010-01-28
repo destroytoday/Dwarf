@@ -256,7 +256,7 @@ package com.destroytoday.dwarf.views.ruler {
 					_maximized = false;
 					
 					if (event.controlKey) {
-						stage.nativeWindow.width += (event.shiftKey) ? 10.0 : 1.0;
+						stage.nativeWindow.height += (event.shiftKey) ? 10.0 : 1.0;
 					} else {
 						stage.nativeWindow.y += (event.shiftKey) ? 10.0 : 1.0;
 					}

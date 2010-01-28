@@ -8,6 +8,12 @@ package com.destroytoday.dwarf.assets {
 		public static const GREY_A:uint = 0xAAAAAA;
 		public static const GREY_C3C6C8:uint = 0xC3C6C8;
 		
+		// stylesheet colors
+		public static const WHITE_HTML:String = "#FFFFFF";
+		public static const BLUE_HTML:String = "#007998";
+		public static const BLUE_OVER_HTML:String = "#3CAEAF";
+		public static const RED_HTML:String = "#CA3430";
+		
 		// tool colors
 		public static const WHITE:uint = 0xFFFFFF;
 		public static const BLACK:uint = 0x000000;

@@ -3,6 +3,7 @@ package com.destroytoday.dwarf.mediators {
 	import com.destroytoday.dwarf.views.ruler.RulerView;
 	import com.destroytoday.dwarf.views.toolbar.ToolbarView;
 	import com.destroytoday.util.WindowUtil;
+	import com.google.analytics.GATracker;
 	
 	import flash.events.MouseEvent;
 	import flash.net.URLRequest;

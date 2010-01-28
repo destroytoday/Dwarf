@@ -7,6 +7,7 @@ package com.destroytoday.dwarf.views.ruler {
 	import flash.display.NativeWindowInitOptions;
 	import flash.display.NativeWindowResize;
 	import flash.display.NativeWindowSystemChrome;
+	import flash.display.Stage;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.Event;

@@ -8,6 +8,7 @@ package com.destroytoday.dwarf.controllers {
 	import com.destroytoday.dwarf.views.ruler.RulerView;
 	import com.destroytoday.util.ApplicationUtil;
 	import com.destroytoday.util.WindowUtil;
+	import com.google.analytics.GATracker;
 	
 	import org.robotlegs.mvcs.Actor;
 	
@@ -16,6 +17,12 @@ package com.destroytoday.dwarf.controllers {
 	 * @author Jonnie Hallman
 	 */	
 	public class ToolController extends Actor {
+		/**
+		 * @private 
+		 */		
+		[Inject]
+		public var tracker:GATracker;
+		
 		/**
 		 * @private 
 		 */		
@@ -51,6 +58,8 @@ package com.destroytoday.dwarf.controllers {
 		 * @param type the class type to add
 		 */		
 		public function addTool(type:Class):void {
+			tracker.trackEvent("Tools", "Add tool", String(type));
+			
 			var tool:ITool = new type();
 			
 			switch (type) {

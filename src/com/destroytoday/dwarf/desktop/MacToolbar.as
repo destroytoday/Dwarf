@@ -1,7 +1,11 @@
 package com.destroytoday.dwarf.desktop {
 	import com.destroytoday.desktop.NativeMenuPlus;
 	import com.destroytoday.dwarf.controllers.ToolController;
+	import com.destroytoday.dwarf.core.ITool;
 	import com.destroytoday.dwarf.models.ToolModel;
+	import com.destroytoday.dwarf.signals.AddToolSignal;
+	import com.destroytoday.dwarf.signals.RemoveToolSignal;
+	import com.destroytoday.dwarf.views.ruler.RulerView;
 	import com.destroytoday.util.ApplicationUtil;
 	import com.destroytoday.util.WindowUtil;
 	
@@ -18,9 +22,27 @@ package com.destroytoday.dwarf.desktop {
 	 * @author Jonnie Hallman
 	 */	
 	public class MacToolbar {
+		/**
+		 * @private 
+		 */	
+		[Inject]
+		public var addToolSignal:AddToolSignal;
+		
+		/**
+		 * @private 
+		 */	
+		[Inject]
+		public var removeToolSignal:RemoveToolSignal;
+		
+		/**
+		 * @private 
+		 */	
 		[Inject]
 		public var toolController:ToolController;
 		
+		/**
+		 * @private 
+		 */	
 		[Inject]
 		public var toolModel:ToolModel;
 		
@@ -91,7 +113,7 @@ package com.destroytoday.dwarf.desktop {
 				<menu>
 					<item name="newRuler" keyEquivalentModifiers="command" keyEquivalent="r" label="New Ruler" />
 					<separator />
-					<item name="closeTool" keyEquivalentModifiers="command" keyEquivalent="w" label="Close Tool" />
+					<item name="closeTool" keyEquivalentModifiers="command" keyEquivalent="w" label="Close Tool" enabled="false" />
 				</menu>;
 			
 			fileItem.submenu = fileMenu;
@@ -111,9 +133,33 @@ package com.destroytoday.dwarf.desktop {
 			windowItem.submenu = windowMenu;
 			
 			//add listeners
+			addToolSignal.add(addToolHandler);
+			removeToolSignal.add(removeToolHandler);
 			applicationMenu.itemSelectSignal.add(applicationMenuItemSelectHandler);
 			fileMenu.itemSelectSignal.add(fileMenuItemSelectHandler);
 			windowMenu.itemSelectSignal.add(windowMenuItemSelectHandler);
+		}
+		
+		/**
+		 * @private
+		 * @param tool
+		 */		
+		protected function addToolHandler(tool:ITool):void {
+			fileMenu.getItemByName("closeTool").enabled = true;
+			windowMenu.getItemByName("maximizeWindow").enabled = true;
+			windowMenu.getItemByName("minimizeWindow").enabled = true;
+		}
+		
+		/**
+		 * @private 
+		 * @param tool
+		 */		
+		protected function removeToolHandler(tool:ITool):void {
+			if (toolModel.tools.length == 0) {
+				fileMenu.getItemByName("closeTool").enabled = false;
+				windowMenu.getItemByName("maximizeWindow").enabled = false;
+				windowMenu.getItemByName("minimizeWindow").enabled = false;
+			}
 		}
 		
 		/**
@@ -142,7 +188,7 @@ package com.destroytoday.dwarf.desktop {
 		protected function fileMenuItemSelectHandler(menu:NativeMenuPlus, item:NativeMenuItem):void {
 			switch (item.name) {
 				case "newRuler":
-					toolController.addRuler();
+					toolController.addTool(RulerView);
 					break;
 				case "closeTool":
 					toolController.removeCurrentTool();

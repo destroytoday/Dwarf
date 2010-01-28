@@ -16,8 +16,13 @@ package com.destroytoday.dwarf.views.toolbar {
 	import flash.geom.Rectangle;
 	
 	public class ToolbarView extends Group {
+		public var leftGroup:Group;
+		public var rightGroup:Group;
+		
 		public var applicationButton:TextButton;
 		public var rulerButton:TextButton;
+		
+		public var quitButton:TextButton;
 		
 		protected var positionTween:GTween;
 		
@@ -26,8 +31,13 @@ package com.destroytoday.dwarf.views.toolbar {
 		protected var _state:String = ToolbarState.NORMAL;
 		
 		public function ToolbarView() {
-			applicationButton = addChild(new TextButton()) as TextButton;
-			rulerButton = addChild(new TextButton()) as TextButton;
+			leftGroup = addChild(new Group()) as Group;
+			rightGroup = addChild(new Group()) as Group;
+			
+			applicationButton = leftGroup.addChild(new TextButton()) as TextButton;
+			rulerButton = leftGroup.addChild(new TextButton()) as TextButton;
+			
+			quitButton = rightGroup.addChild(new TextButton()) as TextButton;
 			
 			applicationButton.paddingRight = 2.0;
 			applicationButton.maxWidth = 27.0;
@@ -37,11 +47,20 @@ package com.destroytoday.dwarf.views.toolbar {
 			
 			rulerButton.text = "Ruler";
 			
+			quitButton.text = "Quit";
+			
 			positionTween = new GTween(this, 0.75);
 			
+			leftGroup.align = GroupAlignType.LEFT;
+			leftGroup.gap = 1.0;
+			leftGroup.measureChildren = false;
+			
+			rightGroup.align = GroupAlignType.RIGHT;
+			rightGroup.gap = 1.0;
+			rightGroup.right = 0.0;
+			rightGroup.measureChildren = false;
+			
 			measureChildren = false;
-			align = GroupAlignType.LEFT;
-			gap = 1.0;
 			
 			left = 0.0;
 			right = 0.0;

@@ -3,7 +3,10 @@ package com.destroytoday.dwarf.controllers {
 	import com.destroytoday.dwarf.core.ITool;
 	import com.destroytoday.dwarf.models.ToolModel;
 	import com.destroytoday.dwarf.signals.AddRulerSignal;
+	import com.destroytoday.dwarf.signals.AddToolSignal;
+	import com.destroytoday.dwarf.signals.RemoveToolSignal;
 	import com.destroytoday.dwarf.views.ruler.RulerView;
+	import com.destroytoday.util.ApplicationUtil;
 	import com.destroytoday.util.WindowUtil;
 	
 	import org.robotlegs.mvcs.Actor;
@@ -13,9 +16,27 @@ package com.destroytoday.dwarf.controllers {
 	 * @author Jonnie Hallman
 	 */	
 	public class ToolController extends Actor {
+		/**
+		 * @private 
+		 */		
 		[Inject]
 		public var model:ToolModel;
 		
+		/**
+		 * @private 
+		 */		
+		[Inject]
+		public var addToolSignal:AddToolSignal;
+		
+		/**
+		 * @private 
+		 */	
+		[Inject]
+		public var removeToolSignal:RemoveToolSignal;
+		
+		/**
+		 * @private 
+		 */	
 		[Inject]
 		public var addRulerSignal:AddRulerSignal;
 		
@@ -26,34 +47,40 @@ package com.destroytoday.dwarf.controllers {
 		}
 		
 		/**
-		 * Adds a ruler.
+		 * Adds a tool of the provided class.
+		 * @param type the class type to add
 		 */		
-		public function addRuler():void {
-			var ruler:RulerView = new RulerView();
+		public function addTool(type:Class):void {
+			var tool:ITool = new type();
 			
-			addRulerSignal.dispatch(ruler);
-			
-			ruler.open();
-			
-			model.addTool(ruler);
+			switch (type) {
+				case RulerView:
+					addRulerSignal.dispatch(tool);
+					break;
+			}
+
+			tool.open();
+			model.addTool(tool);
+			addToolSignal.dispatch(tool);
 		}
 		
 		/**
-		 * Removes the provided ruler.
-		 * @param ruler
+		 * Removes the provided tool.
+		 * @param tool the tool to remove
 		 */		
-		public function removeRuler(ruler:RulerView):void {
-			ruler.close();
-			model.removeTool(ruler);
+		public function removeTool(tool:ITool):void {
+			tool.close();
+			model.removeTool(tool);
+			removeToolSignal.dispatch(tool);
 		}
 		
 		/**
 		 * Removes the current tool, as indicated by the ToolModel.
 		 */		
 		public function removeCurrentTool():void {
-			var tool:ITool = model.removeTool(model.currentTool);
-			
-			if (tool) tool.close();
+			if (model.currentTool) {
+				removeTool(model.currentTool);
+			}
 		}
 	}
 }

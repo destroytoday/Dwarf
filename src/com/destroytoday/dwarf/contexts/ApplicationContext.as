@@ -8,6 +8,8 @@ package com.destroytoday.dwarf.contexts {
 	import com.destroytoday.dwarf.mediators.ToolbarMediator;
 	import com.destroytoday.dwarf.models.ToolModel;
 	import com.destroytoday.dwarf.signals.AddRulerSignal;
+	import com.destroytoday.dwarf.signals.AddToolSignal;
+	import com.destroytoday.dwarf.signals.RemoveToolSignal;
 	import com.destroytoday.dwarf.views.ruler.RulerView;
 	import com.destroytoday.dwarf.views.toolbar.ToolbarView;
 	import com.destroytoday.util.ApplicationUtil;
@@ -35,15 +37,31 @@ package com.destroytoday.dwarf.contexts {
 		 * @inheritDoc
 		 */		
 		override public function startup():void {
+			// map controllers
 			injector.mapSingleton(ToolController);
+			
+			// map models
 			injector.mapSingleton(ToolModel);
-			injector.mapSingleton(MacToolbar);
+			
+			// map instance classes
 			injector.mapSingleton(IconMenu);
 			injector.mapSingleton(RulerMenu);
 			
+			// map signal commands
 			injector.mapValue(AddRulerSignal, signalCommandMap.mapSignalClass(AddRulerSignal, AddRulerCommand));
 			
+			// map signals
+			injector.mapSingleton(AddToolSignal);
+			injector.mapSingleton(RemoveToolSignal);
+			
+			// map view mediators
+			mediatorMap.mapView(ToolbarView, ToolbarMediator);
+			mediatorMap.mapView(RulerView, RulerMediator);
+			
+			// continue mapping instances after signals
 			if (ApplicationUtil.mac) {
+				injector.mapSingleton(MacToolbar);
+				
 				var toolbar:MacToolbar = new MacToolbar();
 				
 				injector.injectInto(toolbar);
@@ -54,9 +72,6 @@ package com.destroytoday.dwarf.contexts {
 			var iconMenu:IconMenu = new IconMenu();
 			injector.injectInto(iconMenu);
 			iconMenu.setup();
-			
-			mediatorMap.mapView(ToolbarView, ToolbarMediator);
-			mediatorMap.mapView(RulerView, RulerMediator);
 		}
 	}
 }

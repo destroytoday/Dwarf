@@ -7,10 +7,14 @@ package com.destroytoday.dwarf.services {
 	
 	import com.destroytoday.dwarf.constants.Config;
 	import com.destroytoday.dwarf.views.updater.ApplicationUpdaterView;
+	import com.destroytoday.filesystem.CacheObject;
 	import com.google.analytics.GATracker;
 	
 	import flash.events.ErrorEvent;
 	import flash.events.ProgressEvent;
+	import flash.net.URLRequest;
+	import flash.net.navigateToURL;
+	import flash.system.Capabilities;
 	
 	import org.robotlegs.core.IMediatorMap;
 	import org.robotlegs.mvcs.Actor;
@@ -28,8 +32,19 @@ package com.destroytoday.dwarf.services {
 		[Inject]
 		public var mediatorMap:IMediatorMap;
 		
+		/**
+		 * The updater that handles the checking, downloading, and installing of new updates.
+		 */		
 		public var updater:ApplicationUpdater;
 		
+		/**
+		 * @private 
+		 */		
+		protected var cache:CacheObject = new CacheObject("application");
+		
+		/**
+		 * Constructs the ApplicationUpdaterService instance.
+		 */		
 		public function ApplicationUpdaterService() {
 			updater = new ApplicationUpdater();
 			
@@ -48,14 +63,16 @@ package com.destroytoday.dwarf.services {
 		}
 		
 		protected function initializedHandler(event:UpdateEvent):void {
-			trace(event);	
+			trace(event);
+			
+			if (cache.getProperty("firstRun") == null) {
+				cache.setProperty("firstRun", false);
+				
+				tracker.trackEvent("Application", "Install", Capabilities.os);
+			}
 			
 			if (updater.isFirstRun) {
-				if (updater.previousVersion) {
-					tracker.trackEvent("Application", "Install", updater.currentVersion);
-				} else {
-					tracker.trackEvent("Application", "Update", updater.previousVersion + " to " + updater.currentVersion);
-				}
+				tracker.trackEvent("Application", "Update", updater.previousVersion + " to " + updater.currentVersion);
 			}
 			
 			updater.checkNow();

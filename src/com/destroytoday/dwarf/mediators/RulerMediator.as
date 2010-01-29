@@ -1,9 +1,11 @@
 package com.destroytoday.dwarf.mediators {
 	import com.destroytoday.dwarf.assets.Color;
+	import com.destroytoday.dwarf.controllers.ToolController;
 	import com.destroytoday.dwarf.desktop.RulerMenu;
 	import com.destroytoday.dwarf.models.ToolModel;
 	import com.destroytoday.dwarf.views.ruler.RulerView;
 	
+	import flash.desktop.NativeApplication;
 	import flash.events.ContextMenuEvent;
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
@@ -17,12 +19,27 @@ package com.destroytoday.dwarf.mediators {
 	 * @author Jonnie Hallman
 	 */	
 	public class RulerMediator extends Mediator {
+		/**
+		 * @private 
+		 */		
 		[Inject]
 		public var rulerMenu:RulerMenu;
 		
+		/**
+		 * @private 
+		 */		
+		[Inject]
+		public var toolController:ToolController;
+		
+		/**
+		 * @private 
+		 */		
 		[Inject]
 		public var toolModel:ToolModel;
 		
+		/**
+		 * @private 
+		 */		
 		[Inject]
 		public var view:RulerView;
 		

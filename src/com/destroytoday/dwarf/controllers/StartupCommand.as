@@ -36,6 +36,7 @@ package com.destroytoday.dwarf.controllers {
 		 */		
 		override public function execute():void {
 			tracker.trackEvent("Application", "Startup", Capabilities.os);
+			tracker.trackPageview("/");
 			
 			updaterService.updater.initialize();
 		}

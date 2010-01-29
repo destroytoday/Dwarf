@@ -89,11 +89,10 @@ package com.destroytoday.dwarf.desktop {
 					ruler.stage.nativeWindow.height = 1080.0;
 					break;
 				default:
-					trace(item.name, String(int(item.name)), int(item.name), item.name == String(int(item.name)));
 					if (item.name == String(int(item.name))) {
 						ruler.alpha = int(item.name) * 0.01;
 					} else {
-						ruler.color = Color[item.name.toUpperCase()];
+						ruler.fadeColorTo(Color[item.name.toUpperCase()], 0.25);
 					}
 			}
 		}

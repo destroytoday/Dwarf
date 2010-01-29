@@ -6,7 +6,6 @@ package com.destroytoday.dwarf.core {
 	public interface ITool {
 		function get color():uint;
 		function set color(value:uint):void;
-		
 		function get alpha():Number;
 		function set alpha(value:Number):void;
 		

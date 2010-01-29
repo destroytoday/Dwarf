@@ -2,6 +2,9 @@ package com.destroytoday.dwarf.views.ruler {
 	import com.destroytoday.display.Group;
 	import com.destroytoday.dwarf.assets.Color;
 	import com.destroytoday.dwarf.core.ITool;
+	import com.destroytoday.dwarf.util.ColorUtil;
+	import com.gskinner.motion.GTween;
+	import com.gskinner.motion.easing.Quadratic;
 	
 	import flash.display.NativeWindow;
 	import flash.display.NativeWindowInitOptions;
@@ -14,6 +17,7 @@ package com.destroytoday.dwarf.views.ruler {
 	import flash.events.KeyboardEvent;
 	import flash.events.MouseEvent;
 	import flash.events.NativeWindowBoundsEvent;
+	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	
 	import org.osflash.signals.Signal;
@@ -23,6 +27,11 @@ package com.destroytoday.dwarf.views.ruler {
 	 * @author Jonnie Hallman
 	 */	
 	public class RulerView extends Group implements ITool {
+		/**
+		 * @private 
+		 */		
+		protected var colorTween:GTween;
+		
 		/**
 		 * @private 
 		 */		
@@ -54,6 +63,21 @@ package com.destroytoday.dwarf.views.ruler {
 		protected var _maximized:Boolean;
 		
 		/**
+		 * @private 
+		 */		
+		protected var colorFade:Number;
+		
+		/**
+		 * @private
+		 */		
+		protected var colorFadeStart:uint;
+		
+		/**
+		 * @private 
+		 */		
+		protected var colorFadeEnd:uint;
+		
+		/**
 		 * Constructs the RulerWindow instance.
 		 */		
 		public function RulerView() {
@@ -70,6 +94,8 @@ package com.destroytoday.dwarf.views.ruler {
 			widthText = addChild(new RulerSizeText()) as RulerSizeText;
 			heightText = addChild(new RulerSizeText()) as RulerSizeText;
 			
+			colorTween = new GTween(null, 0.5, null, {ease: Quadratic.easeInOut, autoPlay: false});
+			
 			window.stage.addChild(this);
 			
 			window.stage.scaleMode = StageScaleMode.NO_SCALE;
@@ -81,6 +107,7 @@ package com.destroytoday.dwarf.views.ruler {
 			heightText.middle = 10.0;
 			heightText.x = 10.0;
 			platform.doubleClickEnabled = true;
+			
 			measureChildren = false;
 			
 			// set the default size
@@ -92,6 +119,8 @@ package com.destroytoday.dwarf.views.ruler {
 			window.addEventListener(Event.ACTIVATE, activateHandler, false, 0, true);
 			window.addEventListener(Event.DEACTIVATE, deactivateHandler, false, 0, true);
 			window.stage.addEventListener(MouseEvent.MOUSE_DOWN, mouseDownHandler, false, 0, true);
+			
+			colorTween.onChange = colorFadeChangeHandler;
 		}
 		
 		/**
@@ -132,6 +161,20 @@ package com.destroytoday.dwarf.views.ruler {
 			_maximized = false;
 
 			stage.nativeWindow.minimize();
+		}
+		
+		/**
+		 * Fades the Ruler's color to the provided color.
+		 * @param color the color to fade to
+		 */		
+		public function fadeColorTo(color:uint, delay:Number = 0.0):void {
+			colorFade = 0.0;
+			colorFadeStart = this.color;
+			colorFadeEnd = color;
+			colorTween.delay = 0.0;
+			colorTween.setValue("colorFade", 1);
+			colorTween.paused = false;
+			colorTween.delay = delay;
 		}
 		
 		/**
@@ -221,6 +264,14 @@ package com.destroytoday.dwarf.views.ruler {
 		}
 		
 		/**
+		 * @private 
+		 * @param tween
+		 */		
+		protected function colorFadeChangeHandler(tween:GTween):void {
+			color = ColorUtil.getColorBetween(colorFadeStart, colorFadeEnd, tween.ratio);
+		}
+		
+		/**
 		 * @private
 		 * @param event
 		 */		
@@ -278,25 +329,13 @@ package com.destroytoday.dwarf.views.ruler {
 		protected function keyUpHandler(event:KeyboardEvent):void {
 			switch (event.keyCode) {
 				case Keyboard.R:
-					color = Color.RED;
-					break;
 				case Keyboard.O:
-					color = Color.ORANGE;
-					break;
 				case Keyboard.Y:
-					color = Color.YELLOW;
-					break;
 				case Keyboard.G:
-					color = Color.GREEN;
-					break;
 				case Keyboard.B:
-					color = Color.BLUE;
-					break;
 				case Keyboard.K:
-					color = Color.BLACK;
-					break;
 				case Keyboard.W:
-					color = Color.WHITE;
+					fadeColorTo(ColorUtil.getColorByKey(event.keyCode));
 					break;
 			}
 		}
@@ -381,9 +420,9 @@ package com.destroytoday.dwarf.views.ruler {
 		 */		
 		protected function doubleClickHandler(event:MouseEvent):void {
 			if (event.altKey) {
-				stage.nativeWindow.maximize();
+				maximize();
 			} else {
-				stage.nativeWindow.minimize();
+				minimize();
 			}
 		}
 	}

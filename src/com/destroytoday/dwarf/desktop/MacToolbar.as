@@ -67,6 +67,16 @@ package com.destroytoday.dwarf.desktop {
 		public var fileMenu:NativeMenuPlus;
 		
 		/**
+		 * The Edit menu item. 
+		 */		
+		public var editItem:NativeMenuItem;
+		
+		/**
+		 * The Edit menu. 
+		 */		
+		public var editMenu:NativeMenuPlus;
+		
+		/**
 		 * The Window menu item. 
 		 */		
 		public var windowItem:NativeMenuItem;
@@ -119,6 +129,21 @@ package com.destroytoday.dwarf.desktop {
 			fileItem.submenu = fileMenu;
 			
 			//
+			// Edit Item / Menu
+			//
+			editItem = NativeApplication.nativeApplication.menu.getItemAt(2);
+			editMenu = new NativeMenuPlus();
+			
+			editMenu.data = 
+				<menu>
+					<item name="cut" keyEquivalentModifiers="command" keyEquivalent="x" label="Cut" enabled="false" />
+					<item name="copy" keyEquivalentModifiers="command" keyEquivalent="c" label="Copy" enabled="false" />
+					<item name="paste" keyEquivalentModifiers="command" keyEquivalent="v" label="Paste" />
+				</menu>;
+			
+			editItem.submenu = editMenu;
+			
+			//
 			// Window Item / Menu
 			//
 			windowItem = NativeApplication.nativeApplication.menu.getItemAt(3);
@@ -137,6 +162,7 @@ package com.destroytoday.dwarf.desktop {
 			removeToolSignal.add(removeToolHandler);
 			applicationMenu.itemSelectSignal.add(applicationMenuItemSelectHandler);
 			fileMenu.itemSelectSignal.add(fileMenuItemSelectHandler);
+			editMenu.itemSelectSignal.add(editMenuItemSelectHandler);
 			windowMenu.itemSelectSignal.add(windowMenuItemSelectHandler);
 		}
 		
@@ -146,6 +172,8 @@ package com.destroytoday.dwarf.desktop {
 		 */		
 		protected function addToolHandler(tool:ITool):void {
 			fileMenu.getItemByName("closeTool").enabled = true;
+			editMenu.getItemByName("cut").enabled = true;
+			editMenu.getItemByName("copy").enabled = true;
 			windowMenu.getItemByName("maximizeWindow").enabled = true;
 			windowMenu.getItemByName("minimizeWindow").enabled = true;
 		}
@@ -157,6 +185,8 @@ package com.destroytoday.dwarf.desktop {
 		protected function removeToolHandler(tool:ITool):void {
 			if (toolModel.tools.length == 0) {
 				fileMenu.getItemByName("closeTool").enabled = false;
+				editMenu.getItemByName("cut").enabled = false;
+				editMenu.getItemByName("copy").enabled = false;
 				windowMenu.getItemByName("maximizeWindow").enabled = false;
 				windowMenu.getItemByName("minimizeWindow").enabled = false;
 			}
@@ -192,6 +222,25 @@ package com.destroytoday.dwarf.desktop {
 					break;
 				case "closeTool":
 					toolController.removeCurrentTool();
+					break;
+			}
+		}
+		
+		/**
+		 * @private
+		 * @param menu
+		 * @param item
+		 */		
+		protected function editMenuItemSelectHandler(menu:NativeMenuPlus, item:NativeMenuItem):void {
+			switch (item.name) {
+				case "cut":
+					toolController.cutTool();
+					break;
+				case "copy":
+					toolController.copyTool();
+					break;
+				case "paste":
+					toolController.pasteTool();
 					break;
 			}
 		}

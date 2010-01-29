@@ -1,20 +1,25 @@
 package com.destroytoday.dwarf.contexts {
 	import com.destroytoday.dwarf.constants.Config;
+	import com.destroytoday.dwarf.controllers.AddGuideCommand;
 	import com.destroytoday.dwarf.controllers.AddRulerCommand;
 	import com.destroytoday.dwarf.controllers.StartupCommand;
 	import com.destroytoday.dwarf.controllers.ToolController;
+	import com.destroytoday.dwarf.desktop.GuideMenu;
 	import com.destroytoday.dwarf.desktop.IconMenu;
 	import com.destroytoday.dwarf.desktop.MacToolbar;
 	import com.destroytoday.dwarf.desktop.RulerMenu;
 	import com.destroytoday.dwarf.mediators.ApplicationUpdaterMediator;
+	import com.destroytoday.dwarf.mediators.GuideMediator;
 	import com.destroytoday.dwarf.mediators.RulerMediator;
 	import com.destroytoday.dwarf.mediators.ToolbarMediator;
 	import com.destroytoday.dwarf.models.ToolModel;
 	import com.destroytoday.dwarf.services.ApplicationUpdaterService;
+	import com.destroytoday.dwarf.signals.AddGuideSignal;
 	import com.destroytoday.dwarf.signals.AddRulerSignal;
 	import com.destroytoday.dwarf.signals.AddToolSignal;
 	import com.destroytoday.dwarf.signals.RemoveToolSignal;
 	import com.destroytoday.dwarf.signals.StartupSignal;
+	import com.destroytoday.dwarf.views.guide.GuideView;
 	import com.destroytoday.dwarf.views.ruler.RulerView;
 	import com.destroytoday.dwarf.views.toolbar.ToolbarView;
 	import com.destroytoday.dwarf.views.updater.ApplicationUpdaterView;
@@ -23,7 +28,6 @@ package com.destroytoday.dwarf.contexts {
 	
 	import flash.display.DisplayObjectContainer;
 	
-	import org.robotlegs.mvcs.Context;
 	import org.robotlegs.mvcs.SignalContext;
 	
 	/**
@@ -57,11 +61,13 @@ package com.destroytoday.dwarf.contexts {
 			// map other
 			injector.mapSingleton(IconMenu);
 			injector.mapSingleton(RulerMenu);
+			injector.mapSingleton(GuideMenu);
 			
 			// map signal commands
 			var startupSignal:StartupSignal = StartupSignal(signalCommandMap.mapSignalClass(StartupSignal, StartupCommand));
 			injector.mapValue(StartupSignal, startupSignal);
 			injector.mapValue(AddRulerSignal, signalCommandMap.mapSignalClass(AddRulerSignal, AddRulerCommand));
+			injector.mapValue(AddGuideSignal, signalCommandMap.mapSignalClass(AddGuideSignal, AddGuideCommand));
 			
 			// map signals
 			injector.mapSingleton(AddToolSignal);
@@ -71,7 +77,8 @@ package com.destroytoday.dwarf.contexts {
 			mediatorMap.mapView(ApplicationUpdaterView, ApplicationUpdaterMediator);
 			mediatorMap.mapView(ToolbarView, ToolbarMediator);
 			mediatorMap.mapView(RulerView, RulerMediator);
-			
+			mediatorMap.mapView(GuideView, GuideMediator);
+
 			// continue mapping instances after signals
 			if (ApplicationUtil.mac) {
 				injector.mapSingleton(MacToolbar);

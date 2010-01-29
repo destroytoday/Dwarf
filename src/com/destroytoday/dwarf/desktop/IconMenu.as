@@ -2,23 +2,21 @@ package com.destroytoday.dwarf.desktop {
 	import com.destroytoday.desktop.NativeMenuPlus;
 	import com.destroytoday.dwarf.assets.Assets;
 	import com.destroytoday.dwarf.controllers.ToolController;
-	import com.destroytoday.dwarf.core.ITool;
 	import com.destroytoday.dwarf.models.ToolModel;
 	import com.destroytoday.dwarf.signals.AddToolSignal;
 	import com.destroytoday.dwarf.signals.RemoveToolSignal;
+	import com.destroytoday.dwarf.views.base.ToolView;
 	import com.destroytoday.dwarf.views.ruler.RulerView;
 	import com.destroytoday.util.ApplicationUtil;
 	import com.destroytoday.util.WindowUtil;
 	
 	import flash.desktop.DockIcon;
-	import flash.desktop.Icon;
 	import flash.desktop.NativeApplication;
 	import flash.desktop.SystemTrayIcon;
 	import flash.display.NativeMenuItem;
 	import flash.events.ScreenMouseEvent;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
-	import flash.ui.Keyboard;
 	
 	public class IconMenu extends NativeMenuPlus {
 		/**
@@ -90,7 +88,7 @@ package com.destroytoday.dwarf.desktop {
 		 * @private
 		 * @param tool
 		 */		
-		protected function addToolHandler(tool:ITool):void {
+		protected function addToolHandler(tool:ToolView):void {
 			getItemByName("closeTool").enabled = true;
 		}
 		
@@ -98,7 +96,7 @@ package com.destroytoday.dwarf.desktop {
 		 * @private 
 		 * @param tool
 		 */		
-		protected function removeToolHandler(tool:ITool):void {
+		protected function removeToolHandler(tool:ToolView):void {
 			if (toolModel.tools.length == 0) {
 				getItemByName("closeTool").enabled = false;
 			}

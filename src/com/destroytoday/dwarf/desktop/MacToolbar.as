@@ -1,21 +1,18 @@
 package com.destroytoday.dwarf.desktop {
 	import com.destroytoday.desktop.NativeMenuPlus;
 	import com.destroytoday.dwarf.controllers.ToolController;
-	import com.destroytoday.dwarf.core.ITool;
 	import com.destroytoday.dwarf.models.ToolModel;
 	import com.destroytoday.dwarf.signals.AddToolSignal;
 	import com.destroytoday.dwarf.signals.RemoveToolSignal;
+	import com.destroytoday.dwarf.views.base.ToolView;
+	import com.destroytoday.dwarf.views.guide.GuideView;
 	import com.destroytoday.dwarf.views.ruler.RulerView;
-	import com.destroytoday.util.ApplicationUtil;
 	import com.destroytoday.util.WindowUtil;
 	
 	import flash.desktop.NativeApplication;
 	import flash.display.NativeMenuItem;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
-	import flash.ui.Keyboard;
-	
-	import org.robotlegs.mvcs.Actor;
 
 	/**
 	 * The Toolbar class represents the desktop toolbar on Mac.
@@ -122,6 +119,7 @@ package com.destroytoday.dwarf.desktop {
 			fileMenu.data = 
 				<menu>
 					<item name="newRuler" keyEquivalentModifiers="command" keyEquivalent="r" label="New Ruler" />
+					<item name="newGuide" keyEquivalentModifiers="command" keyEquivalent="g" label="New Guide" />
 					<separator />
 					<item name="closeTool" keyEquivalentModifiers="command" keyEquivalent="w" label="Close Tool" enabled="false" />
 				</menu>;
@@ -170,7 +168,7 @@ package com.destroytoday.dwarf.desktop {
 		 * @private
 		 * @param tool
 		 */		
-		protected function addToolHandler(tool:ITool):void {
+		protected function addToolHandler(tool:ToolView):void {
 			fileMenu.getItemByName("closeTool").enabled = true;
 			editMenu.getItemByName("cut").enabled = true;
 			editMenu.getItemByName("copy").enabled = true;
@@ -182,7 +180,7 @@ package com.destroytoday.dwarf.desktop {
 		 * @private 
 		 * @param tool
 		 */		
-		protected function removeToolHandler(tool:ITool):void {
+		protected function removeToolHandler(tool:ToolView):void {
 			if (toolModel.tools.length == 0) {
 				fileMenu.getItemByName("closeTool").enabled = false;
 				editMenu.getItemByName("cut").enabled = false;
@@ -219,6 +217,9 @@ package com.destroytoday.dwarf.desktop {
 			switch (item.name) {
 				case "newRuler":
 					toolController.addTool(RulerView);
+					break;
+				case "newGuide":
+					toolController.addTool(GuideView);
 					break;
 				case "closeTool":
 					toolController.removeCurrentTool();

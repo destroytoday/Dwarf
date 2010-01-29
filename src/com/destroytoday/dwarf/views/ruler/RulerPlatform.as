@@ -59,8 +59,6 @@ package com.destroytoday.dwarf.views.ruler {
 		 * @param value
 		 */		
 		override public function set alpha(value:Number):void {
-			if (value < 0.2 || value > 1.0) return;
-			
 			_alpha = value;
 			
 			draw();

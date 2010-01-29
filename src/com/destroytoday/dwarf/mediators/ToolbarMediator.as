@@ -1,5 +1,6 @@
 package com.destroytoday.dwarf.mediators {
 	import com.destroytoday.dwarf.controllers.ToolController;
+	import com.destroytoday.dwarf.views.guide.GuideView;
 	import com.destroytoday.dwarf.views.ruler.RulerView;
 	import com.destroytoday.dwarf.views.toolbar.ToolbarView;
 	import com.destroytoday.util.WindowUtil;
@@ -24,6 +25,7 @@ package com.destroytoday.dwarf.mediators {
 		override public function onRegister():void {
 			eventMap.mapListener(view.applicationButton, MouseEvent.CLICK, applicationButtonClickHandler, MouseEvent);
 			eventMap.mapListener(view.rulerButton, MouseEvent.CLICK, rulerButtonClickHandler, MouseEvent);
+			eventMap.mapListener(view.guideButton, MouseEvent.CLICK, guideButtonClickHandler, MouseEvent);
 			eventMap.mapListener(view.quitButton, MouseEvent.CLICK, quitButtonClickHandler, MouseEvent);
 		}
 		
@@ -33,6 +35,10 @@ package com.destroytoday.dwarf.mediators {
 		
 		protected function rulerButtonClickHandler(event:MouseEvent):void {
 			toolController.addTool(RulerView);
+		}
+		
+		protected function guideButtonClickHandler(event:MouseEvent):void {
+			toolController.addTool(GuideView);
 		}
 		
 		protected function quitButtonClickHandler(event:MouseEvent):void {

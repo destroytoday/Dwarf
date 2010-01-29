@@ -1,44 +1,39 @@
 package com.destroytoday.dwarf.mediators {
 	import com.destroytoday.desktop.NativeMenuPlus;
-	import com.destroytoday.dwarf.assets.Color;
-	import com.destroytoday.dwarf.controllers.ToolController;
+	import com.destroytoday.dwarf.desktop.GuideMenu;
 	import com.destroytoday.dwarf.desktop.RulerMenu;
 	import com.destroytoday.dwarf.mediators.base.ToolMediator;
-	import com.destroytoday.dwarf.models.ToolModel;
 	import com.destroytoday.dwarf.views.base.ToolView;
+	import com.destroytoday.dwarf.views.guide.GuideView;
 	import com.destroytoday.dwarf.views.ruler.RulerView;
-	import com.destroytoday.util.ApplicationUtil;
-	
-	import flash.desktop.NativeApplication;
-	import flash.events.ContextMenuEvent;
-	import flash.events.Event;
-	import flash.events.KeyboardEvent;
-	import flash.events.MouseEvent;
-	import flash.ui.Keyboard;
-	
-	import org.robotlegs.mvcs.Mediator;
 
 	/**
-	 * The RulerMediator.
+	 * The GuideMediator.
 	 * @author Jonnie Hallman
 	 */	
-	public class RulerMediator extends ToolMediator {
+	public class GuideMediator extends ToolMediator {
 		/**
 		 * @private 
 		 */		
 		[Inject]
-		public var rulerMenu:RulerMenu;
+		public var guideMenu:GuideMenu;
 		
 		/**
 		 * @private 
 		 */		
 		[Inject]
-		public var view:RulerView;
+		public var view:GuideView;
 		
 		/**
 		 * Constructs the RulerMediator instance.
 		 */		
-		public function RulerMediator() {
+		public function GuideMediator() {
+		}
+		
+		override public function onRegister():void {
+			super.onRegister();
+			
+			view.orientationChangeSignal.add(orientationChangeHandler);
 		}
 		
 		/**
@@ -54,7 +49,16 @@ package com.destroytoday.dwarf.mediators {
 		 * @return 
 		 */		
 		override protected function get menu():NativeMenuPlus {
-			return rulerMenu;
+			return guideMenu;
+		}
+		
+		/**
+		 * @private 
+		 * @param tool
+		 * @param color
+		 */		
+		protected function orientationChangeHandler(guide:GuideView, orientation:String):void {
+			toolModel.toolOrientation = orientation;
 		}
 	}
 }

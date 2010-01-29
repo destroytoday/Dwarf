@@ -1,20 +1,17 @@
 package com.destroytoday.dwarf.controllers {
 	import com.destroytoday.dwarf.constants.RegularExpression;
 	import com.destroytoday.dwarf.constants.ToolType;
-	import com.destroytoday.dwarf.core.ITool;
 	import com.destroytoday.dwarf.models.ToolModel;
+	import com.destroytoday.dwarf.signals.AddGuideSignal;
 	import com.destroytoday.dwarf.signals.AddRulerSignal;
 	import com.destroytoday.dwarf.signals.AddToolSignal;
 	import com.destroytoday.dwarf.signals.RemoveToolSignal;
 	import com.destroytoday.dwarf.util.ToolUtil;
-	import com.destroytoday.dwarf.views.ruler.RulerView;
+	import com.destroytoday.dwarf.views.base.ToolView;
 	import com.google.analytics.GATracker;
 	
 	import flash.desktop.Clipboard;
 	import flash.desktop.ClipboardFormats;
-	import flash.desktop.ClipboardTransferMode;
-	
-	import mx.utils.ObjectUtil;
 	
 	import org.robotlegs.mvcs.Actor;
 	
@@ -37,7 +34,7 @@ package com.destroytoday.dwarf.controllers {
 		
 		/**
 		 * @private 
-		 */		
+		 */	
 		[Inject]
 		public var addToolSignal:AddToolSignal;
 		
@@ -54,6 +51,12 @@ package com.destroytoday.dwarf.controllers {
 		public var addRulerSignal:AddRulerSignal;
 		
 		/**
+		 * @private 
+		 */	
+		[Inject]
+		public var addGuideSignal:AddGuideSignal;
+		
+		/**
 		 * Constructs the ToolController instance.
 		 */		
 		public function ToolController() {
@@ -63,21 +66,24 @@ package com.destroytoday.dwarf.controllers {
 		 * Adds a tool of the provided class.
 		 * @param type the class type to add
 		 */		
-		public function addTool(type:Class):ITool {
+		public function addTool(type:Class):ToolView {
 			tracker.trackEvent("Tools", "Add tool", String(type));
+
+			var tool:ToolView = new type();
 			
-			var tool:ITool = new type();
-			
-			switch (type) {
-				case RulerView:
+			switch (ToolUtil.getToolType(tool)) {
+				case ToolType.RULER:
 					addRulerSignal.dispatch(tool);
 					break;
+				case ToolType.GUIDE:
+					addGuideSignal.dispatch(tool);
+					break;
 			}
-
+			
 			tool.open();
 			model.addTool(tool);
 			addToolSignal.dispatch(tool);
-			
+
 			return tool;
 		}
 		
@@ -85,7 +91,7 @@ package com.destroytoday.dwarf.controllers {
 		 * Removes the provided tool.
 		 * @param tool the tool to remove
 		 */		
-		public function removeTool(tool:ITool):void {
+		public function removeTool(tool:ToolView):void {
 			tool.close();
 			model.removeTool(tool);
 			removeToolSignal.dispatch(tool);
@@ -128,7 +134,7 @@ package com.destroytoday.dwarf.controllers {
 				model.toolColor = match[6];
 				model.toolAlpha = match[7];
 				
-				var tool:ITool = addTool(ToolUtil.getToolClass(match[1]));
+				var tool:ToolView = addTool(ToolUtil.getToolClass(match[1]));
 				
 				tool.window.x = match[2];
 				tool.window.y = match[3];

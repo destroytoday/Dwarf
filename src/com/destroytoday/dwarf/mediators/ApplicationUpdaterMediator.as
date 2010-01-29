@@ -5,6 +5,7 @@ package com.destroytoday.dwarf.mediators {
 	import com.destroytoday.dwarf.views.updater.ApplicationUpdaterView;
 	import com.destroytoday.events.TextFieldLinkManagerEvent;
 	import com.destroytoday.text.TextFieldLinkManager;
+	import com.destroytoday.util.WindowUtil;
 	
 	import flash.events.ProgressEvent;
 	import flash.net.URLRequest;
@@ -32,6 +33,7 @@ package com.destroytoday.dwarf.mediators {
 			view.setInfo(updaterService.updater.currentVersion, updaterService.updater.updateDescriptor.ns::version);
 			
 			view.stage.nativeWindow.activate();
+			WindowUtil.center(view.stage.nativeWindow);
 		}
 		
 		protected function linkClickHandler(event:TextFieldLinkManagerEvent):void {

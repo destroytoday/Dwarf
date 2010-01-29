@@ -21,7 +21,7 @@ package com.destroytoday.dwarf.views.toolbar {
 		
 		public var applicationButton:TextButton;
 		public var rulerButton:TextButton;
-		
+		public var guideButton:TextButton;
 		public var quitButton:TextButton;
 		
 		protected var positionTween:GTween;
@@ -36,6 +36,7 @@ package com.destroytoday.dwarf.views.toolbar {
 			
 			applicationButton = leftGroup.addChild(new TextButton()) as TextButton;
 			rulerButton = leftGroup.addChild(new TextButton()) as TextButton;
+			guideButton = leftGroup.addChild(new TextButton()) as TextButton;
 			
 			quitButton = rightGroup.addChild(new TextButton()) as TextButton;
 			
@@ -46,7 +47,7 @@ package com.destroytoday.dwarf.views.toolbar {
 			applicationButton.textfield.textColor = Color.RED;
 			
 			rulerButton.text = "Ruler";
-			
+			guideButton.text = "Guide";
 			quitButton.text = "Quit";
 			
 			positionTween = new GTween(this, 0.75);
